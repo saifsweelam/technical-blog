@@ -1,8 +1,10 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import createError, { HttpError } from 'http-errors';
 import morgan from 'morgan';
+import cors from 'cors';
 
 import config from './config';
+import APIResponse from './interfaces/response.interface';
 
 import authRouter from './routes/auth.routes';
 import commentsRouter from './routes/comments.routes';
@@ -15,6 +17,9 @@ const app: Express = express();
 
 // Use Logger
 app.use(morgan('dev'));
+
+// CORS Headers Middleware
+app.use(cors());
 
 // Set Routes
 app.use('/', authRouter);
@@ -31,11 +36,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Errors Handler
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction): void => {
-    res.status(err.statusCode).json({
+    const response: APIResponse<undefined> = {
         success: false,
         statusCode: err.statusCode,
-        error: err
-    });
+        error: err,
+    }
+    res.status(err.statusCode).json(response);
 })
 
 app.listen(config.port, () => console.log(`Listening on port ${config.port}`));
