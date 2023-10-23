@@ -3,7 +3,7 @@ import createError, { HttpError } from 'http-errors';
 import morgan from 'morgan';
 import cors from 'cors';
 
-import config from './config';
+import { port } from './config';
 import APIResponse from './interfaces/response.interface';
 
 import authRouter from './routes/auth.routes';
@@ -20,6 +20,8 @@ app.use(morgan('dev'));
 
 // CORS Headers Middleware
 app.use(cors());
+
+app.use(express.json());
 
 // Set Routes
 app.use('/', authRouter);
@@ -44,6 +46,6 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction): void 
     res.status(err.statusCode).json(response);
 })
 
-app.listen(config.port, () => console.log(`Listening on port ${config.port}`));
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 export default app;
