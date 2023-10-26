@@ -9,8 +9,8 @@ export async function getUserByEmail(email: string) {
     return await prisma.user.findUnique({ where: { email } });
 }
 
-export async function createUser(user: Prisma.UserCreateArgs["data"]) {
-    return await prisma.user.create({ data: user });
+export async function createUser(data: Prisma.UserCreateArgs["data"]) {
+    return await prisma.user.create({ data });
 }
 
 export function excludePassword(user: User) {
@@ -19,3 +19,4 @@ export function excludePassword(user: User) {
 }
 
 export declare type User = Prisma.UserGetPayload<{}>;
+export declare type UserWithoutPassword = ReturnType<typeof excludePassword>;

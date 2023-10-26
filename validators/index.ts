@@ -1,18 +1,9 @@
-import { RequestHandler, Response } from 'express';
+import { Response } from 'express';
 import { ValidationError } from 'zod-express-validator';
-import createError, { HttpError } from 'http-errors';
-import { ZodSchema } from 'zod';
+import createHttpError, { HttpError } from 'http-errors';
+import { z } from 'zod';
 
-export interface Validator {
-    bodySchema?: ZodSchema,
-    paramsSchema?: ZodSchema,
-    querySchema?: ZodSchema,
-    resSchema?: ZodSchema,
-
-    validate(): RequestHandler
-}
-
-export interface APIResponse<Resource> {
+export interface APIResponse<Resource = any> {
     success: boolean,
     statusCode: number,
     count?: number,
@@ -22,5 +13,14 @@ export interface APIResponse<Resource> {
 }
 
 export function errorHandler (errors: ValidationError<any, any, any>, res: Response): Response {
-    throw createError(400, "Validation Error", errors);
+    throw createHttpError(400, "Validation Error", errors);
+}
+
+export function idParamsValidator<T extends string> (...params: T[]): z.ZodObject<{ [K in T]: z.ZodNumber }> {
+    return z.object(Object.fromEntries(params.map(param => [param, z.coerce.number().int()])) as { [K in T]: z.ZodNumber });
+}
+
+export const paginationFields = {
+    page: z.coerce.number().int().default(1),
+    count: z.coerce.number().int().default(10)
 }

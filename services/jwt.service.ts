@@ -1,17 +1,30 @@
 import { verify, sign } from 'jsonwebtoken';
 import { User } from '../models/users.models';
-import { secret } from '../config';
+import { secret, altSecret } from '../config';
 
 export default {
-    generate (user: User) {
+    generateAccessToken (user: User) {
         return sign(user, secret);
     },
 
-    decrypt (token: string): (User|false) {
+    decryptAccessToken (token: string): (User|void) {
         try {
             return verify(token, secret) as User;
-        } catch (err) {
-            return false;
+        } catch {
+            return;
+        }
+    },
+
+    generateRefreshToken (userId: number) {
+        return sign({ userId }, altSecret, { expiresIn: "1y" });
+    },
+
+    decryptRefreshToken (token: string): (number|void) {
+        try {
+            const data = verify(token, altSecret) as { userId: number }
+            return data.userId;
+        } catch {
+            return;
         }
     }
 }
