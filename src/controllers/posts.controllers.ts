@@ -35,6 +35,7 @@ export const createPost: CreatePostMiddleware = async (req: CreatePostRequest, r
         const topic = await Topics.getTopicById(req.body.topicId);
         if (!topic) return next(createHttpError(400, "Topic doesn't exist"));
         const post = await Posts.createPost({
+            title: req.body.title,
             content: req.body.content,
             thumbnail: req.body.thumbnail,
             topicId: req.body.topicId,

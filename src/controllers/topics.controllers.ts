@@ -74,6 +74,7 @@ export const createTopicPost: CreateTopicPostMiddleware = async (req: CreateTopi
         const topic = await Topics.getTopicById(req.params.topicId);
         if (!topic) return next(createHttpError(404, "Topic Not Found"));
         const post = await Posts.createPost({
+            title: req.body.title,
             content: req.body.content,
             thumbnail: req.body.thumbnail,
             authorId: req.user!.id,

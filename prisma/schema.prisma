@@ -38,6 +38,7 @@ model Topic {
 
 model Post {
   id        Int       @id @default(autoincrement())
+  title     String
   content   String?
   thumbnail String?
   views     Int       @default(0)

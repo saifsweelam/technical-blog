@@ -15,6 +15,7 @@ export declare type GetPostsMiddleware = typeof getPosts;
 
 export const createPost = validate({
     body: z.object({
+        title: z.string(),
         content: z.string(),
         thumbnail: z.string().url().optional(),
         topicId: z.number().int()

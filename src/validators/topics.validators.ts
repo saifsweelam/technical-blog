@@ -40,6 +40,7 @@ export declare type GetTopicPostsMiddleware = typeof getTopicPosts;
 export const createTopicPost = validate({
     params: idParamsValidator("topicId"),
     body: z.object({
+        title: z.string(),
         content: z.string(),
         thumbnail: z.string().url().optional(),
     })
