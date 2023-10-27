@@ -4,7 +4,7 @@ import responserService from '../services/responser.service';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { User, excludePassword, getUserById } from '../models/users.models';
 
-export declare type AuthorizedRequest<R extends Request<any> = Request> = R & { user?: User }
+export declare type AuthorizedRequest<R extends Request<any, any, any, any> = Request> = R & { user?: User }
 
 export const userMiddleware: RequestHandler = (req: AuthorizedRequest, res, next) => {
     try {
