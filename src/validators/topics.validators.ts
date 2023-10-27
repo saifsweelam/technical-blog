@@ -49,7 +49,10 @@ export const createTopicPost = validate({
 export declare type CreateTopicPostMiddleware = typeof createTopicPost;
 
 export const getTopicPost = validate({
-    params: idParamsValidator("topicId", "postId")
+    params: idParamsValidator("topicId", "postId"),
+    query: z.object({
+        full: z.coerce.boolean().default(false)
+    })
 }, errorHandler);
 
 export declare type GetTopicPostMiddleware = typeof getTopicPost;

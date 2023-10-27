@@ -90,7 +90,7 @@ export const createTopicPost: CreateTopicPostMiddleware = async (req: CreateTopi
 type GetTopicPostRequuest = AuthorizedRequest<Parameters<GetTopicPostMiddleware>[0]>
 export const getTopicPost: GetTopicPostMiddleware = async (req: GetTopicPostRequuest, res, next) => {
     try {
-        const post = await Posts.getFullPostById(req.params.postId);
+        const post = req.query.full ? await Posts.getFullPostById(req.params.postId) : await Posts.getPostById(req.params.postId);
         if (!post) return next(createHttpError(404, "Post Not Found"));
         const isLiked = (req.user?.id && await Likes.getLikeByUserAndPost(req.user.id, req.params.postId)) ? true : false;
         responserService.success(res, { post, isLiked });

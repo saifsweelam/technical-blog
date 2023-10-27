@@ -20,7 +20,7 @@ export async function getLikesWithUsers ({ page = 1, count = 10 }: PaginationOpt
     });
 }
 
-export async function getLikesWithPosts ({ page = 1, count = 10 }: PaginationOptions, where: Prisma.LikeFindManyArgs["where"]) {
+export async function getLikesWithPosts ({ page = 1, count = 10 }: PaginationOptions, where?: Prisma.LikeFindManyArgs["where"]) {
     return await prisma.like.findMany({
         where,
         skip: count * (page - 1),

@@ -51,7 +51,7 @@ export const createPost: CreatePostMiddleware = async (req: CreatePostRequest, r
 type GetPostRequest = AuthorizedRequest<Parameters<GetPostMiddleware>[0]>
 export const getPost: GetPostMiddleware = async (req: GetPostRequest, res, next) => {
     try {
-        const post = await Posts.getFullPostById(req.params.postId);
+        const post = req.query.full ? await Posts.getFullPostById(req.params.postId) : await Posts.getPostById(req.params.postId);
         if (!post) return next(createHttpError(404, "Post Not Found"));
         const isLiked = (req.user?.id && await Likes.getLikeByUserAndPost(req.user.id, req.params.postId)) ? true : false;
         responserService.success(res, { post, isLiked });

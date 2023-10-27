@@ -25,7 +25,10 @@ export const createPost = validate({
 export declare type CreatePostMiddleware = typeof createPost;
 
 export const getPost = validate({
-    params: idParamsValidator("postId")
+    params: idParamsValidator("postId"),
+    query: z.object({
+        full: z.coerce.boolean().default(false)
+    })
 }, errorHandler);
 
 export declare type GetPostMiddleware = typeof getPost;
