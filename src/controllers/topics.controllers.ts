@@ -2,7 +2,6 @@ import { AuthorizedRequest } from "../middlewares/auth.middlewares";
 import { CreateTopicMiddleware, CreateTopicPostMiddleware, GetTopicMiddleware, GetTopicPostMiddleware, GetTopicPostsMiddleware, GetTopicsMiddleware } from "../validators/topics.validators";
 import * as Posts from '../models/posts.models';
 import * as Topics from '../models/topics.models';
-import * as Comments from '../models/comments.models';
 import * as Likes from '../models/likes.models';
 import responserService from "../services/responser.service";
 import { PaginationOptions } from "../utils/types";
