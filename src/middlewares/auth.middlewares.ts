@@ -24,19 +24,6 @@ export const userMiddleware: RequestHandler = (req: AuthorizedRequest, res, next
 }
 
 export const requiresAuth: RequestHandler<any> = (req: AuthorizedRequest, res, next) => {
-    if (!req.user) return checkRefreshToken(req, res, next);
+    if (!req.user) return next(createHttpError(401));
     return next();
-}
-
-const checkRefreshToken = async (req: Request, res: Response, next: NextFunction, err: HttpError = createHttpError(401)) => {
-    const token: string = req.cookies?.refreshToken;
-    if (!token) return next(err);
-    const userId = jwtService.decryptRefreshToken(token);
-    if (!userId) return next(err);
-    const user = await getUserById(userId);
-    if (!user) return next(err);
-    const accessToken = jwtService.generateAccessToken(user);
-    const refreshToken = jwtService.generateRefreshToken(user.id);
-    res.cookie("refreshToken", refreshToken, { maxAge: 3.516e10, httpOnly: true });
-    return responserService.success(res, { user: excludePassword(user), accessToken });
 }
